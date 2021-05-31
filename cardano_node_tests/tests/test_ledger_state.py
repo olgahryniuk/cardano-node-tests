@@ -9,6 +9,7 @@ from cardano_clusterlib import clusterlib
 
 from cardano_node_tests.utils import clusterlib_utils
 from cardano_node_tests.utils import configuration
+from cardano_node_tests.utils import dbsync_utils
 from cardano_node_tests.utils import helpers
 
 LOGGER = logging.getLogger(__name__)
@@ -42,6 +43,25 @@ LEDGER_STATE_KEYS = (
     "stateBefore",
 )
 
+def compare_protocol_parameters_between_ledger_and_db(ledger_state_obj, db_sync_record):
+    assert ledger_state_obj["minUTxOValue"] == db_sync_record.min_utxo_value
+    assert ledger_state_obj["eMax"] == db_sync_record.max_epoch
+    assert ledger_state_obj["minFeeB"] == db_sync_record.min_fee_b
+    assert ledger_state_obj["tau"] == db_sync_record.treasury_growth_rate
+    assert ledger_state_obj["maxBlockBodySize"] == db_sync_record.max_block_size
+    assert ledger_state_obj["maxTxSize"] == db_sync_record.max_tx_size
+    assert ledger_state_obj["minPoolCost"] == db_sync_record.min_pool_cost
+    assert ledger_state_obj["minFeeA"] == db_sync_record.min_fee_a
+    assert ledger_state_obj["nOpt"] == db_sync_record.optimal_pool_count
+    assert ledger_state_obj["maxBlockHeaderSize"] == db_sync_record.max_bh_size
+    assert ledger_state_obj["keyDeposit"] == db_sync_record.key_deposit
+    assert ledger_state_obj["poolDeposit"] == db_sync_record.pool_deposit
+    assert ledger_state_obj["protocolVersion"]["minor"] == db_sync_record.protocol_minor
+    assert ledger_state_obj["protocolVersion"]["major"] == db_sync_record.protocol_major
+    assert ledger_state_obj["a0"] == db_sync_record.influence
+    assert ledger_state_obj["rho"] == db_sync_record.monetary_expand_rate
+    assert ledger_state_obj["decentralisationParam"] == db_sync_record.decentralisation
+
 
 class TestLedgerState:
     """Basic tests for ledger state."""
@@ -55,3 +75,21 @@ class TestLedgerState:
         """Check output of `query ledger-state`."""
         ledger_state = clusterlib_utils.get_ledger_state(cluster_obj=cluster)
         assert tuple(sorted(ledger_state)) == LEDGER_STATE_KEYS
+
+    @pytest.mark.dbsync
+    @allure.link(helpers.get_vcs_link())
+    @pytest.mark.skipif(
+        bool(configuration.TX_ERA),
+        reason="different TX eras doesn't affect this test, pointless to run",
+    )
+    def test_ledger_state_protocol_parameters(self, cluster: clusterlib.ClusterLib):
+        """Check output of `query ledger-state` for protocal parameters and compare with values stored in db-sync."""
+        ledger_state = clusterlib_utils.get_ledger_state(cluster_obj=cluster)
+        protocol_parameters_from_ledger = ledger_state["stateBefore"]["esPrevPp"]
+
+        tip = cluster.get_tip()
+        current_epoch = tip["epoch"]
+        protocol_parameters_from_db = dbsync_utils.get_protocol_parameters(current_epoch)
+
+        if protocol_parameters_from_db:
+            compare_protocol_parameters_between_ledger_and_db(protocol_parameters_from_ledger, protocol_parameters_from_db)

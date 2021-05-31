@@ -21,6 +21,31 @@ LOGGER = logging.getLogger(__name__)
 DBSYNC_DB = "dbsync"
 
 
+class EpochParamDBRow(NamedTuple):
+    id: int
+    epoch_no: int
+    min_fee_a: int
+    min_fee_b: int
+    max_block_size: int
+    max_tx_size: int
+    max_bh_size: int
+    key_deposit: int
+    pool_deposit: int
+    max_epoch: int
+    optimal_pool_count: int
+    influence: float
+    monetary_expand_rate: float
+    treasury_growth_rate: float
+    decentralisation: float
+    entropy: str
+    protocol_major: int
+    protocol_minor: int
+    min_utxo_value: int
+    min_pool_cost: int
+    nonce: str
+    block_id: int
+
+
 class MetadataRecord(NamedTuple):
     key: int
     json: Any
@@ -165,6 +190,25 @@ class ADAPotsDBRow(NamedTuple):
     deposits: decimal.Decimal
     fees: decimal.Decimal
     block_id: int
+
+
+def query_protocol_parameters(epoch_no: int) -> Generator[EpochParamDBRow, None, None]:
+    """Query protocol parameters in db-sync."""
+    with dbsync_conn.DBSync.conn().cursor() as cur:
+        cur.execute(
+            "SELECT"
+            " id, epoch_no, min_fee_a, min_fee_b, max_block_size, max_tx_size, "
+            " max_bh_size, key_deposit, pool_deposit, max_epoch, optimal_pool_count, "
+            " influence, monetary_expand_rate, treasury_growth_rate, decentralisation, "
+            " entropy, protocol_major, protocol_minor, min_utxo_value, min_pool_cost, "
+            " nonce, block_id "
+            "FROM epoch_param "
+            "WHERE epoch_no = %s;",
+            [epoch_no]
+        )
+
+        while (result := cur.fetchone()) is not None:
+            yield EpochParamDBRow(*result)
 
 
 def query_tx(txhash: str) -> Generator[TxDBRow, None, None]:
@@ -353,6 +397,16 @@ def query_ada_pots(
 
         while (result := cur.fetchone()) is not None:
             yield ADAPotsDBRow(*result)
+
+
+def get_protocol_parameters(epoch_no: int) -> EpochParamDBRow:
+    """Get first batch of transaction data from db-sync."""
+    protocol_params = []
+
+    for query_row in query_protocol_parameters(epoch_no=epoch_no):
+        protocol_params.append(query_row)
+
+    return protocol_params[-1]
 
 
 def get_prelim_tx_record(txhash: str) -> TxPrelimRecord:
