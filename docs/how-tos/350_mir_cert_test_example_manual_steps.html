@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test MIR certificate submission with local cluster &mdash; cardano-node-tests  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Stake Credential History Tool" href="380_stake_credential_history_tool.html" />
+    <link rel="prev" title="How to start local cluster" href="300_running_local_cluster.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> cardano-node-tests
+            <img src="../_static/Cardano-Crypto-Logo-128.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README for cardano-node-tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#variables-for-make-tests-and-make-testnets">Variables for <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">tests</span></code> and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testnets</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#tests-development">Tests development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#test-coverage-of-cardano-cli-commands">Test coverage of Cardano-CLI commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#contributing">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../test_results.html">Test Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_results/nightly_system_tests.html">Nightly system tests pipelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../test_results/nightly_system_tests.html#test-statuses">Test statuses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../test_results/nightly_system_tests.html#nightly-results">Nightly results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../test_results/sync_tests.html">Sync tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_results/tag_tests.html">Tag Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../test_results/node/tag_1_35_3.html">1.35.3</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#changelogs">Changelogs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#regression-testing-on-a-local-cluster">Regression testing on a local cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#release-testing-checklist">Release testing checklist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#new-functionalities-in-this-tag">New functionalities in this tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#new-issues">New issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#breaking-changes">Breaking changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#relevant-existing-issues">Relevant existing issues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../process.html">Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../process/100_test_types.html">Types and levels of tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../process/100_test_types.html#node-system-tests">Node System tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#node-nightly-cli-tests">Node Nightly CLI tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#node-cli-tests-on-demand">Node CLI tests (on demand)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#node-sync-tests">Node Sync tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process/100_test_types.html#db-sync-system-tests">DB-Sync System tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#db-sync-nightly-tests">DB-Sync Nightly tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#db-sync-feature-tests-on-demand">DB-Sync feature tests (on demand)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#db-sync-sync-tests">DB-Sync Sync tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process/100_test_types.html#exploratory-testing">Exploratory testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../process/200_quality_control_strategy.html">Quality Control Strategy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#scope-and-objectives">Scope and objectives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#key-principles">Key Principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#quality-control-approach">Quality Control Approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#quality-control-methodology">Quality Control Methodology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../process/200_quality_control_strategy.html#active-quality-control">Active Quality Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/200_quality_control_strategy.html#passive-quality-control">Passive Quality Control</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../process/300_uat_strategy.html">User Acceptance Test Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../how-tos.html">How Tos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="300_running_local_cluster.html">How to start local cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#what-is-a-local-cluster">What is a local cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#initial-setup-for-all-cardano-components">Initial setup for all cardano components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#starting-postgres-test-database">Starting postgres test database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#preparing-local-cluster-scripts">Preparing local cluster scripts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#adjusting-some-parameter-values">Adjusting some parameter values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#start-the-local-cluster">Start the local cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#stop-the-local-cluster">Stop the local cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#set-the-tx-era">Set the TX_Era</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#run-tests">Run tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#run-test-suite-from-file">Run test suite from file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#run-single-test">Run single test</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#interact-with-the-node">Interact with the node</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#transfer-funds-to-your-address">Transfer funds to your address</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#debugging-with-ipython">Debugging with IPython</a></li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#logs-for-cardano-node-and-db-sync">Logs for <code class="docutils literal notranslate"><span class="pre">cardano-node</span></code> and <code class="docutils literal notranslate"><span class="pre">db-sync</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#accessing-db-sync-database">Accessing <code class="docutils literal notranslate"><span class="pre">db-sync</span></code> database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="300_running_local_cluster.html#useful-queries">Useful queries</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="300_running_local_cluster.html#additional-resources">Additional resources</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Test MIR certificate submission with local cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-key-pairs">Create key pairs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#payment-key-pair">Payment key pair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stake-key-pair">Stake key pair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payment-address">Payment address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stake-address">Stake address</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#let-s-transfer-funds-from-faucet-address-to-our-own-shelley-address-payment-addr">Let’s transfer funds from “faucet” address to our own Shelley address <code class="docutils literal notranslate"><span class="pre">payment.addr</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-tx">Build tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sign-tx">Sign tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submit-tx">Submit tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-funds-on-the-payment-addr">Check funds on the payment.addr</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-stake-registration-certificate">Create a stake registration certificate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submit-the-certificate-with-a-transaction">Submit the certificate with a transaction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#our-stake-address-has-id-13-and-is-registered-see-in-table-below">Our stake address has id=13 and is registered -&gt; see in table below</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deregister-empty-stake-address-no-rewards-on-stake-address-as-it-was-no-delegated">Deregister “empty” stake address (no rewards on stake address as it was no delegated)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-deregistration-certificate">Create deregistration certificate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-mir-cert-to-send-funds-from-reserves-to-unregistered-stake-address">Generate MIR cert to send funds from reserves to unregistered stake address</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Build tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Sign tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Submit tx</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#state-of-tables-after-mir-cert-tx-submission">STATE of tables after MIR cert tx submission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logs">Logs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stdout-log">stdout.log</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="380_stake_credential_history_tool.html">Stake Credential History Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="380_stake_credential_history_tool.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="380_stake_credential_history_tool.html#example-of-usage">Example of usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="500_smash_faq.html">SMASH FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html">SMASH - Tests and debugging examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#checking-smash-status">Checking SMASH status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#fetching-of-the-metadata">Fetching of the metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#delisting-pool">Delisting pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#reserving-a-ticker">Reserving a ticker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#whitelisting">Whitelisting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#checking-pool-rejection-errors">Checking pool rejection errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#pool-unregistrations">Pool unregistrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#fetch-policies-from-other-smash-service">Fetch policies from other SMASH service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="520_smash_tests_and_debugging_examples.html#debugging-issue-with-pool-example">Debugging issue with pool - example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/contributing.html">Contributing to cardano-node-tests repo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/contributing.html#how-can-i-contribute">How Can I Contribute?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contribute/contributing.html#reporting-an-issue">Reporting an Issue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../contribute/contributing.html#how-do-i-submit-a-good-issue-report">How Do I Submit A (Good) Issue Report</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../contribute/contributing.html#your-first-code-contribution">Your First Code Contribution</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../contribute/contributing.html#pull-requests">Pull Requests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/contributing.html#id1">Styleguides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contribute/contributing.html#git-commit-messages">Git Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contribute/contributing.html#python-styleguide">Python Styleguide</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Source Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cardano_node_tests.html">cardano_node_tests package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cardano_node_tests.tests.html">cardano_node_tests.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardano_node_tests.utils.html">cardano_node_tests.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests.cardano_cli_coverage">cardano_node_tests.cardano_cli_coverage module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests.prepare_cluster_scripts">cardano_node_tests.prepare_cluster_scripts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests.testnet_cleanup">cardano_node_tests.testnet_cleanup module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cardano-node-tests</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../how-tos.html">How Tos</a> &raquo;</li>
+      <li>Test MIR certificate submission with local cluster</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/input-output-hk/cardano-node-tests/blob/master/src_docs/source/how-tos/350_mir_cert_test_example_manual_steps.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="test-mir-certificate-submission-with-local-cluster">
+<h1>Test MIR certificate submission with local cluster<a class="headerlink" href="#test-mir-certificate-submission-with-local-cluster" title="Permalink to this headline"></a></h1>
+<p>Some node network operations require access to genesis keys and this in other hand requires proper access to
+machines where those nodes are running. This is more of a <code class="docutils literal notranslate"><span class="pre">dev-ops</span></code> thing and in order
+to test things much faster and safer (in worst case test can only break your local cluster which you can easily respin) <code class="docutils literal notranslate"><span class="pre">local-cluster</span></code> is perfect fot investigating such cases.</p>
+<p>Below is an example of such case for running manual test for checking MIR certificate transfer to stake address that was registered and then deregistered before submission of MIR cert transaction. This is a practical example of interacting with <code class="docutils literal notranslate"><span class="pre">local</span> <span class="pre">cluster</span></code> - <code class="docutils literal notranslate"><span class="pre">cardano-node</span></code> and <code class="docutils literal notranslate"><span class="pre">db-sync</span></code> which also presents how easily you can use <code class="docutils literal notranslate"><span class="pre">local</span> <span class="pre">cluster</span></code> for examining cardano fautures.</p>
+<p>This assumes that you have a running local cluster.
+Instructions on how to start a local cluster can be found here:
+<a class="reference external" href="https://input-output-hk.github.io/cardano-node-tests/how-tos/300_running_local_cluster.html">https://input-output-hk.github.io/cardano-node-tests/how-tos/300_running_local_cluster.html</a></p>
+<section id="create-key-pairs">
+<h2>Create key pairs<a class="headerlink" href="#create-key-pairs" title="Permalink to this headline"></a></h2>
+<section id="payment-key-pair">
+<h3>Payment key pair<a class="headerlink" href="#payment-key-pair" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli address key-gen <span class="se">\</span>
+--verification-key-file payment.vkey <span class="se">\</span>
+--signing-key-file payment.skey
+</pre></div>
+</div>
+</section>
+<section id="stake-key-pair">
+<h3>Stake key pair<a class="headerlink" href="#stake-key-pair" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli stake-address key-gen <span class="se">\</span>
+--verification-key-file stake.vkey <span class="se">\</span>
+--signing-key-file stake.skey
+</pre></div>
+</div>
+</section>
+<section id="payment-address">
+<h3>Payment address<a class="headerlink" href="#payment-address" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli address build <span class="se">\</span>
+--payment-verification-key-file payment.vkey <span class="se">\</span>
+--stake-verification-key-file stake.vkey <span class="se">\</span>
+--out-file payment.addr <span class="se">\</span>
+--testnet-magic <span class="m">42</span>
+</pre></div>
+</div>
+</section>
+<section id="stake-address">
+<h3>Stake address<a class="headerlink" href="#stake-address" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli stake-address build <span class="se">\</span>
+--stake-verification-key-file stake.vkey <span class="se">\</span>
+--out-file stake.addr <span class="se">\</span>
+--testnet-magic <span class="m">42</span>
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cat payment.addr
+addr_test1qz57qp78v2udppvyxxxhsl959m8dc32axlplf2sxexz79kp87k8wm2uh9g2js0y942lkvu9lgu3eg93lqv5mn9jm66wsv55af7
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cat stake.addr
+stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns
+</pre></div>
+</div>
+</section>
+</section>
+<section id="let-s-transfer-funds-from-faucet-address-to-our-own-shelley-address-payment-addr">
+<h2>Let’s transfer funds from “faucet” address to our own Shelley address <code class="docutils literal notranslate"><span class="pre">payment.addr</span></code><a class="headerlink" href="#let-s-transfer-funds-from-faucet-address-to-our-own-shelley-address-payment-addr" title="Permalink to this headline"></a></h2>
+<p>First query address that holds funds:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query utxo --address <span class="k">$(</span>cat /home/artur/Projects/cardano-node/state-cluster0/byron/address-000-converted<span class="k">)</span> --testnet-magic <span class="m">42</span>
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+3409ede3ea6665b175c5a56e41187f9e62b4f02901b1437a935b90ad60042249     <span class="m">0</span>        <span class="m">35996998496920237</span> lovelace + TxOutDatumHashNone
+</pre></div>
+</div>
+<p>We will use arbitrary fee = 1 ADA
+and send 2 mln ADA from “faucet” address (address-000-converted) to payment.addr:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>expr <span class="m">35996998496920237</span> - <span class="m">2000000000000</span> - <span class="m">1000000</span>
+<span class="m">35994998495920237</span>
+</pre></div>
+</div>
+<section id="build-tx">
+<h3>Build tx<a class="headerlink" href="#build-tx" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction build-raw <span class="se">\</span>
+--tx-in 3409ede3ea6665b175c5a56e41187f9e62b4f02901b1437a935b90ad60042249#0 <span class="se">\</span>
+--tx-out <span class="k">$(</span>cat ~/Projects/payment.addr<span class="k">)</span>+2000000000000 <span class="se">\</span>
+--tx-out <span class="k">$(</span>cat /home/artur/Projects/cardano-node/state-cluster0/byron/address-000-converted<span class="k">)</span>+35994998495920237 <span class="se">\</span>
+--fee <span class="m">1000000</span> <span class="se">\</span>
+--out-file tx.raw
+</pre></div>
+</div>
+</section>
+<section id="sign-tx">
+<h3>Sign tx<a class="headerlink" href="#sign-tx" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction sign <span class="se">\</span>
+--tx-body-file tx.raw <span class="se">\</span>
+--signing-key-file /home/artur/Projects/cardano-node/state-cluster0/byron/payment-keys.000-converted.skey <span class="se">\</span>
+--testnet-magic <span class="m">42</span> <span class="se">\</span>
+--out-file tx.signed
+</pre></div>
+</div>
+</section>
+<section id="submit-tx">
+<h3>Submit tx<a class="headerlink" href="#submit-tx" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction submit --tx-file tx.signed  --testnet-magic <span class="m">42</span>
+Transaction successfully submitted.
+</pre></div>
+</div>
+</section>
+<section id="check-funds-on-the-payment-addr">
+<h3>Check funds on the payment.addr<a class="headerlink" href="#check-funds-on-the-payment-addr" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query utxo --address <span class="k">$(</span>cat /home/artur/Projects/payment.addr<span class="k">)</span> --testnet-magic <span class="m">42</span>
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+ece90464d725625a1d7d5f484b24199f067d6bddb3df9b05a67c6cc8dba6944e     <span class="m">0</span>        <span class="m">2000000000000</span> lovelace + TxOutDatumHashNone
+</pre></div>
+</div>
+</section>
+</section>
+<section id="create-a-stake-registration-certificate">
+<h2>Create a stake registration certificate<a class="headerlink" href="#create-a-stake-registration-certificate" title="Permalink to this headline"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli stake-address registration-certificate <span class="se">\</span>
+--stake-verification-key-file stake.vkey <span class="se">\</span>
+--out-file stake.cert
+</pre></div>
+</div>
+<p>There is a deposit required for <code class="docutils literal notranslate"><span class="pre">stake</span> <span class="pre">address</span></code>. Let’s check it’s value:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query protocol-parameters --testnet-magic <span class="m">42</span> <span class="p">|</span> grep Deposit
+    <span class="s2">&quot;stakePoolDeposit&quot;</span>: <span class="m">500000000</span>,
+    <span class="s2">&quot;stakeAddressDeposit&quot;</span>: <span class="m">400000</span>,
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">genesis.json</span></code> with value for deposits can be found: cardano-node/state-cluster0/shelley/genesis.json</p>
+<p>Query the UTXO of the address that pays for the transaction and deposit:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query utxo --address <span class="k">$(</span>cat /home/artur/Projects/payment.addr<span class="k">)</span> --testnet-magic <span class="m">42</span>
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+ece90464d725625a1d7d5f484b24199f067d6bddb3df9b05a67c6cc8dba6944e     <span class="m">0</span>        <span class="m">2000000000000</span> lovelace + TxOutDatumHashNone
+</pre></div>
+</div>
+<p>Calculate the change to send back to payment address after including the deposit:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">fee</span> <span class="o">=</span> <span class="m">1</span> <span class="nv">ADA</span> <span class="o">=</span> <span class="m">1000000</span> lovelaces
+Stake Address <span class="nv">Deposit</span> <span class="o">=</span> <span class="m">400000</span> lovelaces
+
+expr <span class="m">2000000000000</span> - <span class="m">1000000</span> - <span class="m">400000</span>
+<span class="m">1999994000000</span>
+</pre></div>
+</div>
+<section id="submit-the-certificate-with-a-transaction">
+<h3>Submit the certificate with a transaction<a class="headerlink" href="#submit-the-certificate-with-a-transaction" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Build tx<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction build-raw <span class="se">\</span>
+--tx-in ece90464d725625a1d7d5f484b24199f067d6bddb3df9b05a67c6cc8dba6944e#0 <span class="se">\</span>
+--tx-out <span class="k">$(</span>cat payment.addr<span class="k">)</span>+1999998600000 <span class="se">\</span>
+--fee <span class="m">1000000</span> <span class="se">\</span>
+--out-file tx002.raw <span class="se">\</span>
+--certificate-file stake.cert
+</pre></div>
+</div>
+</section>
+<section id="sign-it">
+<h4>Sign it<a class="headerlink" href="#sign-it" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction sign <span class="se">\</span>
+--tx-body-file tx002.raw <span class="se">\</span>
+--signing-key-file payment.skey <span class="se">\</span>
+--signing-key-file stake.skey <span class="se">\</span>
+--testnet-magic <span class="m">42</span> <span class="se">\</span>
+--out-file tx002.signed
+</pre></div>
+</div>
+</section>
+<section id="and-submit-it">
+<h4>And submit it<a class="headerlink" href="#and-submit-it" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction submit <span class="se">\</span>
+--tx-file tx002.signed <span class="se">\</span>
+--testnet-magic <span class="m">42</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="our-stake-address-has-id-13-and-is-registered-see-in-table-below">
+<h3>Our stake address has id=13 and is registered -&gt; see in table below<a class="headerlink" href="#our-stake-address-has-id-13-and-is-registered-see-in-table-below" title="Permalink to this headline"></a></h3>
+<p>Stake address is <code class="docutils literal notranslate"><span class="pre">stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns</span></code>.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span>dbsync0=# select * from stake_address;
+ id |                           hash_raw                           |                               view                               | registered_tx_id | script_hash
+----+--------------------------------------------------------------+------------------------------------------------------------------+------------------+-------------
+  5 | \xe0568028c22bdf100e83979696540db02ec6a4eb1f1c8e9d5b91b77487 | stake_test1uptgq2xz9003qr5rj7tfv4qdkqhvdf8truwga82mjxmhfpcxv3p46 |                5 |
+  1 | \xe0e50e564992e494d163c310af81d858168286e6acdff5bf15d887ed19 | stake_test1urjsu4jfjtjff5trcvg2lqwctqtg9phx4n0lt0c4mzr76xgfd5c7u |                5 |
+  8 | \xe0c4e0c1c243bcb0ff38e835d8e35f29c1f7d277587d602d713cf1933e | stake_test1urzwpswzgw7tplecaq6a3c6l98ql05nhtp7kqtt38ncex0stcmuyj |                5 |
+  2 | \xe054ddf4c30186b9154afe55b42ba175d903794ecd66b785c68bd2e7c1 | stake_test1up2dmaxrqxrtj922le2mg2apwhvsx72we4nt0pwx30fw0sg607vyz |                5 |
+ 11 | \xe01c60761146bc394d9fb4e47f9ffbd3fd53256ca52b88dc040f6be406 | stake_test1uqwxqas3g67rjnvlknj8l8lm6074xftv554c3hqypa47gpstqfku4 |                5 |
+  3 | \xe07940665a5f25116ac467b1d0fdc514b86cad61786c59d1a52fcce9da | stake_test1upu5qej6tuj3z6kyv7caplw9zjuxettp0pk9n5d99lxwnksl99hux |                5 |
+ 13 | \xe027f58eedab972a15283c85aabf6670bf472394163f0329b9965bd69d | stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns |                9 |
+(7 rows)
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">stake_registration</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">stake_registration</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">addr_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cert_index</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tx_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">epoch_no</span><span class="w"></span>
+<span class="c1">----+---------+------------+-------+----------</span>
+<span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">8</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="mi">6</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">11</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">9</span><span class="w"> </span><span class="o">|</span><span class="w">     </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w">        </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">13</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="mi">10</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">34</span><span class="w"></span>
+<span class="p">(</span><span class="mi">7</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="deregister-empty-stake-address-no-rewards-on-stake-address-as-it-was-no-delegated">
+<h2>Deregister “empty” stake address (no rewards on stake address as it was no delegated)<a class="headerlink" href="#deregister-empty-stake-address-no-rewards-on-stake-address-as-it-was-no-delegated" title="Permalink to this headline"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query stake-address-info --address stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns --testnet-magic <span class="m">42</span>
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">&quot;address&quot;</span>: <span class="s2">&quot;stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns&quot;</span>,
+        <span class="s2">&quot;rewardAccountBalance&quot;</span>: <span class="m">0</span>,
+        <span class="s2">&quot;delegation&quot;</span>: null
+    <span class="o">}</span>
+<span class="o">]</span>
+</pre></div>
+</div>
+<section id="create-deregistration-certificate">
+<h3>Create deregistration certificate<a class="headerlink" href="#create-deregistration-certificate" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli stake-address deregistration-certificate <span class="se">\</span>
+--stake-verification-key-file stake.vkey <span class="se">\</span>
+--out-file deregistration.cert
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query utxo --address <span class="k">$(</span>cat payment.addr<span class="k">)</span> --testnet-magic <span class="m">42</span>
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a4c141cfae907aa1c4b418f65f384a6d860d52786b412481bc63733acfab1541     <span class="m">0</span>        <span class="m">1999998600000</span> lovelace + TxOutDatumHashNone
+</pre></div>
+</div>
+<section id="add-400000-from-key-deposit-the-will-be-returned">
+<h4>Add +400000 from Key Deposit the will be returned<a class="headerlink" href="#add-400000-from-key-deposit-the-will-be-returned" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>expr <span class="m">1999998600000</span> + <span class="m">400000</span> - <span class="m">1000000</span>
+<span class="m">1999998000000</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Build tx<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction build-raw <span class="se">\</span>
+--tx-in a4c141cfae907aa1c4b418f65f384a6d860d52786b412481bc63733acfab1541#0 <span class="se">\</span>
+--tx-out <span class="k">$(</span>cat payment.addr<span class="k">)</span>+1999998000000 <span class="se">\</span>
+--fee <span class="m">1000000</span> <span class="se">\</span>
+--out-file tx-deregister-stake-addr.raw <span class="se">\</span>
+--certificate-file deregistration.cert
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h4>Sign tx<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction sign <span class="se">\</span>
+--tx-body-file tx-deregister-stake-addr.raw <span class="se">\</span>
+--signing-key-file payment.skey <span class="se">\</span>
+--signing-key-file stake.skey <span class="se">\</span>
+--testnet-magic <span class="m">42</span> <span class="se">\</span>
+--out-file tx-deregister-stake-addr.signed
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h4>Submit tx<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction submit <span class="se">\</span>
+--tx-file tx-deregister-stake-addr.signed <span class="se">\</span>
+--testnet-magic <span class="m">42</span>
+</pre></div>
+</div>
+</section>
+<section id="deregistartion-event-was-registered-in-db-sync">
+<h4>Deregistartion event was registered in <code class="docutils literal notranslate"><span class="pre">db-sync</span></code><a class="headerlink" href="#deregistartion-event-was-registered-in-db-sync" title="Permalink to this headline"></a></h4>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">stake_deregistration</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">stake_deregistration</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">addr_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cert_index</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tx_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">epoch_no</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">redeemer_id</span><span class="w"></span>
+<span class="c1">----+---------+------------+-------+----------+-------------</span>
+<span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">13</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="mi">11</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="mi">39</span><span class="w"> </span><span class="o">|</span><span class="w"></span>
+<span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>RESERVES</strong> and <strong>TREASURY</strong> table state before MIR cert submission:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">reserve</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">reserve</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">addr_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cert_index</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tx_id</span><span class="w"></span>
+<span class="c1">----+---------+------------+--------+-------</span>
+<span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">treasury</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">treasury</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">addr_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cert_index</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tx_id</span><span class="w"></span>
+<span class="c1">----+---------+------------+--------+-------</span>
+<span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="generate-mir-cert-to-send-funds-from-reserves-to-unregistered-stake-address">
+<h2>Generate MIR cert to send funds from reserves to unregistered stake address<a class="headerlink" href="#generate-mir-cert-to-send-funds-from-reserves-to-unregistered-stake-address" title="Permalink to this headline"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli governance create-mir-certificate <span class="se">\</span>
+--stake-address stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns <span class="se">\</span>
+--reserves <span class="se">\</span>
+--reward <span class="m">500000000000</span> <span class="se">\</span>
+--out-file mir_reserves_500K_to_unregistered_stake_addr.cert
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli query utxo --address <span class="k">$(</span>cat payment.addr<span class="k">)</span> --testnet-magic <span class="m">42</span>
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+277cab33552f06331af9dbf0d05635464a769dab05335511df7c7d4d70f41b61     <span class="m">0</span>        <span class="m">1999998000000</span> lovelace + TxOutDatumHashNone
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>expr <span class="m">1999998000000</span> - <span class="m">1000000</span>
+<span class="m">1999997000000</span>
+</pre></div>
+</div>
+<section id="id5">
+<h3>Build tx<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction build-raw <span class="se">\</span>
+--tx-in 277cab33552f06331af9dbf0d05635464a769dab05335511df7c7d4d70f41b61#0 <span class="se">\</span>
+--tx-out <span class="k">$(</span>cat payment.addr<span class="k">)</span>+1999997000000 <span class="se">\</span>
+--fee <span class="m">1000000</span> <span class="se">\</span>
+--out-file tx-mir-cert.raw <span class="se">\</span>
+--certificate-file mir_reserves_500K_to_unregistered_stake_addr.cert
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>Sign tx<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction sign <span class="se">\</span>
+--tx-body-file tx-mir-cert.raw <span class="se">\</span>
+--signing-key-file payment.skey <span class="se">\</span>
+--signing-key-file /home/artur/Projects/cardano-node/state-cluster0/shelley/delegate-keys/delegate1.skey <span class="se">\</span>
+--signing-key-file /home/artur/Projects/cardano-node/state-cluster0/shelley/genesis-keys/genesis1.skey <span class="se">\</span>
+--testnet-magic <span class="m">42</span> <span class="se">\</span>
+--out-file tx-mir-cert.signed
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>Submit tx<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cardano-cli transaction submit <span class="se">\</span>
+--tx-file tx-mir-cert.signed <span class="se">\</span>
+--testnet-magic <span class="m">42</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="state-of-tables-after-mir-cert-tx-submission">
+<h2>STATE of tables after MIR cert tx submission<a class="headerlink" href="#state-of-tables-after-mir-cert-tx-submission" title="Permalink to this headline"></a></h2>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">reserve</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">reserve</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">addr_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cert_index</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="n">amount</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">tx_id</span><span class="w"></span>
+<span class="c1">----+---------+------------+--------------+-------</span>
+<span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w">      </span><span class="mi">13</span><span class="w"> </span><span class="o">|</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">500000000000</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="mi">12</span><span class="w"></span>
+<span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">treasury</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">treasury</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">addr_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">cert_index</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tx_id</span><span class="w"></span>
+<span class="c1">----+---------+------------+--------+-------</span>
+<span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="logs">
+<h2>Logs<a class="headerlink" href="#logs" title="Permalink to this headline"></a></h2>
+<p>We can see that currently there are some issues:</p>
+<section id="stdout-log">
+<h3>stdout.log<a class="headerlink" href="#stdout-log" title="Permalink to this headline"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>db-sync-node:Info:784<span class="o">][</span><span class="m">2021</span>-10-08 <span class="m">12</span>:45:33.21 UTC<span class="o">]</span> Starting epoch <span class="m">58</span>
+<span class="o">[</span>db-sync-node:Info:784<span class="o">]</span> <span class="o">[</span><span class="m">2021</span>-10-08 <span class="m">12</span>:45:33.21 UTC<span class="o">]</span> Handling <span class="m">3</span> stakes <span class="k">for</span> epoch <span class="m">58</span> slot <span class="m">58011</span>, <span class="nb">hash</span> f8175c985699105a67afdc7dae17b325fd1cafd3794500e95722fafecc375ce5
+<span class="o">[</span>db-sync-node:Warning:784<span class="o">]</span><span class="o">[</span>0m <span class="o">[</span><span class="m">2021</span>-10-08 <span class="m">12</span>:45:33.21 UTC<span class="o">]</span> validateEpochRewards: rewards spendable <span class="k">in</span> epoch <span class="m">58</span> expected total of <span class="m">1065</span>.150011 ADA but got <span class="m">501065</span>.150011 ADA
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">dbsync0</span><span class="o">=#</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">epoch_reward_total_received</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">epoch_reward_total_received</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">earned_epoch</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="n">amount</span><span class="w"></span>
+<span class="c1">----+--------------+--------------</span>
+<span class="w"> </span><span class="mi">57</span><span class="w"> </span><span class="o">|</span><span class="w">           </span><span class="mi">56</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">501065150011</span><span class="w"></span>
+<span class="w"> </span><span class="mi">56</span><span class="w"> </span><span class="o">|</span><span class="w">           </span><span class="mi">55</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">1196962304</span><span class="w"></span>
+<span class="w"> </span><span class="mi">55</span><span class="w"> </span><span class="o">|</span><span class="w">           </span><span class="mi">54</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">1197126868</span><span class="w"></span>
+<span class="w"> </span><span class="mi">54</span><span class="w"> </span><span class="o">|</span><span class="w">           </span><span class="mi">53</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">1197291461</span><span class="w"></span>
+<span class="w"> </span><span class="mi">53</span><span class="w"> </span><span class="o">|</span><span class="w">           </span><span class="mi">52</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">1197456077</span><span class="w"></span>
+<span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="n">reward</span><span class="p">.</span><span class="n">earned_epoch</span><span class="p">,</span><span class="w"> </span><span class="n">pool_hash</span><span class="p">.</span><span class="k">view</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">delegated_pool</span><span class="p">,</span><span class="w"> </span><span class="n">reward</span><span class="p">.</span><span class="n">amount</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">lovelace</span><span class="w"></span>
+<span class="w">    </span><span class="k">from</span><span class="w"> </span><span class="n">reward</span><span class="w"> </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">stake_address</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">reward</span><span class="p">.</span><span class="n">addr_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stake_address</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="w">    </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">pool_hash</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">reward</span><span class="p">.</span><span class="n">pool_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pool_hash</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">stake_address</span><span class="p">.</span><span class="k">view</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;stake_test1uqnltrhd4wtj59fg8jz640mxwzl5wgu5zclsx2dejedad8gmxw2ns&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">earned_epoch</span><span class="w"> </span><span class="k">asc</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+
+<span class="o">&lt;</span><span class="k">NOTHING</span><span class="o">&gt;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="300_running_local_cluster.html" class="btn btn-neutral float-left" title="How to start local cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="380_stake_credential_history_tool.html" class="btn btn-neutral float-right" title="Stake Credential History Tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Cardano Test Engineering Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

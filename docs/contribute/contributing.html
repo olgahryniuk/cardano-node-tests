@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing to cardano-node-tests repo &mdash; cardano-node-tests  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Source Documentation" href="../modules.html" />
+    <link rel="prev" title="SMASH - Tests and debugging examples" href="../how-tos/520_smash_tests_and_debugging_examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> cardano-node-tests
+            <img src="../_static/Cardano-Crypto-Logo-128.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README for cardano-node-tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#variables-for-make-tests-and-make-testnets">Variables for <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">tests</span></code> and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testnets</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#tests-development">Tests development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#test-coverage-of-cardano-cli-commands">Test coverage of Cardano-CLI commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../readme.html#contributing">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../test_results.html">Test Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../test_results/nightly_system_tests.html">Nightly system tests pipelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../test_results/nightly_system_tests.html#test-statuses">Test statuses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../test_results/nightly_system_tests.html#nightly-results">Nightly results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../test_results/sync_tests.html">Sync tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_results/tag_tests.html">Tag Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../test_results/node/tag_1_35_3.html">1.35.3</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#changelogs">Changelogs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#regression-testing-on-a-local-cluster">Regression testing on a local cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#release-testing-checklist">Release testing checklist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#new-functionalities-in-this-tag">New functionalities in this tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#new-issues">New issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#breaking-changes">Breaking changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_results/node/tag_1_35_3.html#relevant-existing-issues">Relevant existing issues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../process.html">Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../process/100_test_types.html">Types and levels of tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../process/100_test_types.html#node-system-tests">Node System tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#node-nightly-cli-tests">Node Nightly CLI tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#node-cli-tests-on-demand">Node CLI tests (on demand)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#node-sync-tests">Node Sync tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process/100_test_types.html#db-sync-system-tests">DB-Sync System tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#db-sync-nightly-tests">DB-Sync Nightly tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#db-sync-feature-tests-on-demand">DB-Sync feature tests (on demand)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/100_test_types.html#db-sync-sync-tests">DB-Sync Sync tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process/100_test_types.html#exploratory-testing">Exploratory testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../process/200_quality_control_strategy.html">Quality Control Strategy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#scope-and-objectives">Scope and objectives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#key-principles">Key Principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#quality-control-approach">Quality Control Approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process/200_quality_control_strategy.html#quality-control-methodology">Quality Control Methodology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../process/200_quality_control_strategy.html#active-quality-control">Active Quality Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/200_quality_control_strategy.html#passive-quality-control">Passive Quality Control</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../process/300_uat_strategy.html">User Acceptance Test Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../how-tos.html">How Tos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-tos/300_running_local_cluster.html">How to start local cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#what-is-a-local-cluster">What is a local cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#initial-setup-for-all-cardano-components">Initial setup for all cardano components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#starting-postgres-test-database">Starting postgres test database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#preparing-local-cluster-scripts">Preparing local cluster scripts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#adjusting-some-parameter-values">Adjusting some parameter values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#start-the-local-cluster">Start the local cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#stop-the-local-cluster">Stop the local cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#set-the-tx-era">Set the TX_Era</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#run-tests">Run tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#run-test-suite-from-file">Run test suite from file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#run-single-test">Run single test</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#interact-with-the-node">Interact with the node</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#transfer-funds-to-your-address">Transfer funds to your address</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#debugging-with-ipython">Debugging with IPython</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#logs-for-cardano-node-and-db-sync">Logs for <code class="docutils literal notranslate"><span class="pre">cardano-node</span></code> and <code class="docutils literal notranslate"><span class="pre">db-sync</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#accessing-db-sync-database">Accessing <code class="docutils literal notranslate"><span class="pre">db-sync</span></code> database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#useful-queries">Useful queries</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/300_running_local_cluster.html#additional-resources">Additional resources</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html">Test MIR certificate submission with local cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#create-key-pairs">Create key pairs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#payment-key-pair">Payment key pair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#stake-key-pair">Stake key pair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#payment-address">Payment address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#stake-address">Stake address</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#let-s-transfer-funds-from-faucet-address-to-our-own-shelley-address-payment-addr">Let’s transfer funds from “faucet” address to our own Shelley address <code class="docutils literal notranslate"><span class="pre">payment.addr</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#build-tx">Build tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#sign-tx">Sign tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#submit-tx">Submit tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#check-funds-on-the-payment-addr">Check funds on the payment.addr</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#create-a-stake-registration-certificate">Create a stake registration certificate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#submit-the-certificate-with-a-transaction">Submit the certificate with a transaction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#our-stake-address-has-id-13-and-is-registered-see-in-table-below">Our stake address has id=13 and is registered -&gt; see in table below</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#deregister-empty-stake-address-no-rewards-on-stake-address-as-it-was-no-delegated">Deregister “empty” stake address (no rewards on stake address as it was no delegated)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#create-deregistration-certificate">Create deregistration certificate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#generate-mir-cert-to-send-funds-from-reserves-to-unregistered-stake-address">Generate MIR cert to send funds from reserves to unregistered stake address</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#id5">Build tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#id6">Sign tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#id7">Submit tx</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#state-of-tables-after-mir-cert-tx-submission">STATE of tables after MIR cert tx submission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#logs">Logs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../how-tos/350_mir_cert_test_example_manual_steps.html#stdout-log">stdout.log</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../how-tos/380_stake_credential_history_tool.html">Stake Credential History Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/380_stake_credential_history_tool.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/380_stake_credential_history_tool.html#example-of-usage">Example of usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../how-tos/500_smash_faq.html">SMASH FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html">SMASH - Tests and debugging examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#checking-smash-status">Checking SMASH status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#fetching-of-the-metadata">Fetching of the metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#delisting-pool">Delisting pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#reserving-a-ticker">Reserving a ticker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#whitelisting">Whitelisting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#checking-pool-rejection-errors">Checking pool rejection errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#pool-unregistrations">Pool unregistrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#fetch-policies-from-other-smash-service">Fetch policies from other SMASH service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-tos/520_smash_tests_and_debugging_examples.html#debugging-issue-with-pool-example">Debugging issue with pool - example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to cardano-node-tests repo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-can-i-contribute">How Can I Contribute?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reporting-an-issue">Reporting an Issue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-do-i-submit-a-good-issue-report">How Do I Submit A (Good) Issue Report</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#your-first-code-contribution">Your First Code Contribution</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pull-requests">Pull Requests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Styleguides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#git-commit-messages">Git Commit Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-styleguide">Python Styleguide</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Source Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cardano_node_tests.html">cardano_node_tests package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cardano_node_tests.tests.html">cardano_node_tests.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardano_node_tests.utils.html">cardano_node_tests.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests.cardano_cli_coverage">cardano_node_tests.cardano_cli_coverage module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests.prepare_cluster_scripts">cardano_node_tests.prepare_cluster_scripts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests.testnet_cleanup">cardano_node_tests.testnet_cleanup module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cardano_node_tests.html#module-cardano_node_tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cardano-node-tests</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Contributing to cardano-node-tests repo</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/input-output-hk/cardano-node-tests/blob/master/src_docs/source/contribute/contributing.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contributing-to-cardano-node-tests-repo">
+<h1>Contributing to cardano-node-tests repo<a class="headerlink" href="#contributing-to-cardano-node-tests-repo" title="Permalink to this headline"></a></h1>
+<p>First off, thanks for taking the time to contribute!</p>
+<p>The following is a set of guidelines for contributing to cardano-node-tests.
+These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes
+to this document in a pull request.</p>
+<section id="how-can-i-contribute">
+<h2>How Can I Contribute?<a class="headerlink" href="#how-can-i-contribute" title="Permalink to this headline"></a></h2>
+<section id="reporting-an-issue">
+<h3>Reporting an Issue<a class="headerlink" href="#reporting-an-issue" title="Permalink to this headline"></a></h3>
+<p>This section guides you through submitting an issue report for cardano-node-tests. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.</p>
+<p>Before creating bug reports, please check <a class="reference external" href="https://github.com/input-output-hk/cardano-node-tests/issues">this list of existing issues</a> as you might find out that you don’t need to create one. When you are creating a bug report, please <a class="reference external" href="#HowDoISubmitA(Good">include as many details as possible</a> Issue Report).</p>
+<blockquote>
+<div><p><strong>Note:</strong> If you find a <strong>Closed</strong> issue that seems like it is the same thing that you’re experiencing, open a new issue and include a link to the original issue in the body of your new one.</p>
+</div></blockquote>
+<section id="how-do-i-submit-a-good-issue-report">
+<h4>How Do I Submit A (Good) Issue Report<a class="headerlink" href="#how-do-i-submit-a-good-issue-report" title="Permalink to this headline"></a></h4>
+<p>Explain the problem and include additional details to help maintainers reproduce the problem:</p>
+<ul class="simple">
+<li><p><strong>Use a clear and descriptive title</strong> for the issue to identify the problem.</p></li>
+<li><p><strong>Describe the exact steps which reproduce the problem</strong> in as many details as possible. When listing steps, <strong>don’t just say what you did, but explain how you did it</strong>.</p></li>
+<li><p><strong>Provide specific examples to demonstrate the steps</strong>. Include links to files or GitHub projects, or copy/pasteable snippets, which you use in those examples. If you’re providing snippets in the issue, use <a class="reference external" href="https://help.github.com/articles/markdown-basics/#multiple-lines">Markdown code blocks</a>.</p></li>
+<li><p><strong>Describe the behavior you observed after following the steps</strong> and point out what exactly is the problem with that behavior.</p></li>
+<li><p><strong>Explain which behavior you expected to see instead and why.</strong></p></li>
+<li><p><strong>Which version of cardano-node &amp; cardano-node-tests are you using?</strong></p></li>
+</ul>
+</section>
+</section>
+<section id="your-first-code-contribution">
+<h3>Your First Code Contribution<a class="headerlink" href="#your-first-code-contribution" title="Permalink to this headline"></a></h3>
+<section id="pull-requests">
+<h4>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline"></a></h4>
+<p>The process described here has several goals:</p>
+<ul class="simple">
+<li><p>Maintain cardano-node-tests’ quality</p></li>
+<li><p>Fix problems that are important to users</p></li>
+<li><p>Engage the community in working toward the best possible Cardano System Tests</p></li>
+<li><p>Enable a sustainable system for cardano-node-tests’ maintainers to review contributions</p></li>
+</ul>
+<p>Please follow these steps to have your contribution considered by the maintainers:</p>
+<ol class="arabic simple">
+<li><p>Follow all instructions in the template (TO DO: to be added later)</p></li>
+<li><p>Follow the <a class="reference external" href="#styleguides">styleguides</a></p></li>
+<li><p>After you submit your pull request, verify that all <a class="reference external" href="https://help.github.com/articles/about-status-checks/">status checks</a> are passing.
+If a status check is failing, and you believe that the failure is unrelated to your change,
+please leave a comment on the pull request explaining why you believe the failure is unrelated.
+A maintainer will re-run the status check for you. If we conclude that the failure was a false
+positive, then we will open an issue to track that problem with our status check suite.</p></li>
+</ol>
+<p>While the prerequisites above must be satisfied prior to having your pull request reviewed,
+the reviewer(s) may ask you to complete additional design work, tests, or other changes before
+your pull request can be ultimately accepted.</p>
+</section>
+</section>
+</section>
+<section id="id1">
+<h2>Styleguides<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<section id="git-commit-messages">
+<h3>Git Commit Messages<a class="headerlink" href="#git-commit-messages" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>Use the present tense (“Add feature” not “Added feature”)</p></li>
+<li><p>Use the imperative mood (“Move cursor to…” not “Moves cursor to…”)</p></li>
+<li><p>Limit the first line to 72 characters or less</p></li>
+<li><p>Reference issues and pull requests liberally after the first line</p></li>
+</ul>
+</section>
+<section id="python-styleguide">
+<h3>Python Styleguide<a class="headerlink" href="#python-styleguide" title="Permalink to this headline"></a></h3>
+<p>Run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> to set up the git hook scripts that will check you changes before every commit.
+Alternatively run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">lint</span></code> manually before pushing your changes.</p>
+<p>Follow the Google Python Style Guide, with the exception that formatting is handled automatically by Black
+(through <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> command).</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../how-tos/520_smash_tests_and_debugging_examples.html" class="btn btn-neutral float-left" title="SMASH - Tests and debugging examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules.html" class="btn btn-neutral float-right" title="Source Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Cardano Test Engineering Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
